@@ -1,4 +1,3 @@
-
 import mysql.connector
 from mysql.connector import Error
 
@@ -20,7 +19,7 @@ def stream_users_in_batches(batch_size):
             rows = cursor.fetchmany(batch_size)
             if not rows:
                 break
-            yield rows  # yield each batch at once
+            yield rows  # ✅ yield batches
 
         cursor.close()
         connection.close()
@@ -30,11 +29,9 @@ def stream_users_in_batches(batch_size):
 
 
 def batch_processing(batch_size):
-    """
-    Processes each batch of users:
-    - Only yields users with age > 25
-    """
+    """Generator that yields users over age 25 from batches."""
     for batch in stream_users_in_batches(batch_size):  # loop 1
         for user in batch:  # loop 2
             if int(user["age"]) > 25:
-                yield user
+                yield user  # ✅ yield filtered user
+
