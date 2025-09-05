@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import mysql.connector
 from mysql.connector import Error
 
@@ -18,20 +19,22 @@ def stream_users_in_batches(batch_size):
         while True:
             rows = cursor.fetchmany(batch_size)
             if not rows:
-                break
-            yield rows  # ✅ yield batches
-
-        cursor.close()
-        connection.close()
+                cursor.close()
+                connection.close()
+                return  # ✅ use return to stop generator
+            yield rows
 
     except Error as e:
         print(f"Error streaming in batches: {e}")
+        return
 
 
 def batch_processing(batch_size):
     """Generator that yields users over age 25 from batches."""
-    for batch in stream_users_in_batches(batch_size):  # loop 1
-        for user in batch:  # loop 2
+    for batch in stream_users_in_batches(batch_size):
+        for user in batch:
             if int(user["age"]) > 25:
-                yield user  # ✅ yield filtered user
+                yield user
+    return  # ✅ stops when all batches are processed
+
 
