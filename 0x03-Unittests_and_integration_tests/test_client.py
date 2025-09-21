@@ -38,14 +38,14 @@ class TestGithubOrgClient(unittest.TestCase):
         test_payload = {
             "repos_url": "https://api.github.com/orgs/testorg/repos"
         }
-        
-        with patch('client.GithubOrgClient.org', 
-                  new_callable=PropertyMock) as mock_org:
+
+        with patch('client.GithubOrgClient.org',
+                   new_callable=PropertyMock) as mock_org:
             mock_org.return_value = test_payload
-            
+
             client = GithubOrgClient("testorg")
             result = client._public_repos_url
-            
+
             self.assertEqual(result, test_payload["repos_url"])
 
     @patch('client.get_json')
@@ -56,19 +56,19 @@ class TestGithubOrgClient(unittest.TestCase):
             {"name": "repo2", "license": {"key": "apache-2.0"}},
         ]
         mock_get_json.return_value = test_repos_payload
-        
+
         test_repos_url = "https://api.github.com/orgs/testorg/repos"
-        
+
         with patch('client.GithubOrgClient._public_repos_url',
-                  new_callable=PropertyMock) as mock_public_repos_url:
+                   new_callable=PropertyMock) as mock_public_repos_url:
             mock_public_repos_url.return_value = test_repos_url
-            
+
             client = GithubOrgClient("testorg")
             result = client.public_repos()
-            
+
             expected_repos = ["repo1", "repo2"]
             self.assertEqual(result, expected_repos)
-            
+
             mock_public_repos_url.assert_called_once()
             mock_get_json.assert_called_once_with(test_repos_url)
 
@@ -101,14 +101,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """Set up class for integration tests"""
         cls.get_patcher = patch('client.requests.get')
         cls.mock_get = cls.get_patcher.start()
-        
+
         def side_effect(url):
             if "orgs/google" in url:
                 return Mock(json=lambda: cls.org_payload)
             elif "repos" in url and "google" in url:
                 return Mock(json=lambda: cls.repos_payload)
             return Mock(json=lambda: {})
-            
+
         cls.mock_get.side_effect = side_effect
 
     @classmethod
@@ -127,3 +127,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("google")
         repos = client.public_repos(license="apache-2.0")
         self.assertEqual(repos, self.apache2_repos)
+
+
+if __name__ == '__main__':
+    unittest.main()
