@@ -1,0 +1,310 @@
+{
+  "info": {
+    "name": "Messaging App API",
+    "description": "Collection for testing ALX Messaging App endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"your_username\",\n  \"password\": \"your_password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"your_refresh_token\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", "refresh", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Conversations",
+      "item": [
+        {
+          "name": "Create Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"participants\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/conversations/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Conversations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversation Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "1", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversation Messages (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/1/messages/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "1", "messages", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversation Messages Page 2",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/1/messages/?page=2",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "1", "messages", ""],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation\": 1,\n  \"message_body\": \"Hello, this is a test message!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/messages/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "messages", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List All Messages (Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/messages/?conversation_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "messages", ""],
+              "query": [
+                {
+                  "key": "conversation_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/messages/?search=hello",
+              "host": ["{{base_url}}"],
+              "path": ["api", "messages", ""],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "hello"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Message",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/messages/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "messages", "1", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Security Tests",
+      "item": [
+        {
+          "name": "Access Without Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Access Other User Conversation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/conversations/2/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "conversations", "2", ""]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "access_token",
+      "value": "your_jwt_access_token_here"
+    }
+  ]
+}
